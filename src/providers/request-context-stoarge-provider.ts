@@ -1,5 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
-import { AsyncLocalStorage } from 'async_hooks';
+import { AsyncLocalStorage, executionAsyncId, executionAsyncResource, AsyncResource } from 'async_hooks';
 import { IContextStorageProvider } from './context-storage-provider.interface';
 
 const storage = new AsyncLocalStorage<string>();
@@ -7,8 +6,8 @@ const storage = new AsyncLocalStorage<string>();
 export class RequestContextStorageProvider implements IContextStorageProvider<string> {
   save(key: string): void {
     storage.enterWith(key);
-
-    console.log(storage.getStore());
+    console.log(executionAsyncId());
+    // console.log(executionAsyncResource());
   }
 
   get(): string | undefined {
