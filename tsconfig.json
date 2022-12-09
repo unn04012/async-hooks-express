@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
+    "importHelpers": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["es6", "es2018.promise", "dom"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src/**/*"]
+}
