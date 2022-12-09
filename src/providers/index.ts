@@ -6,6 +6,8 @@ async function initProviderModule() {
   const requestContextStorageProvider = new RequestContextStorageProvider();
 
   instances.requestContextStorageProvider = requestContextStorageProvider;
+
+  console.log(`[${new Date().toISOString()}] provider module initialized`);
 }
 
 function getProviderModule() {
