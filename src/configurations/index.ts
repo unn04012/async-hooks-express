@@ -17,7 +17,7 @@ function getConfiguration() {
     throw new Error('the configuration-module not have been initialized');
   }
   return {
-    beconEnv: () => conf.beconEnv,
+    env: () => conf.env,
     mysql: () => conf.mysql,
     http: () => conf.http,
   };

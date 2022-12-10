@@ -1,7 +1,7 @@
-type BeconEnv = 'LOCAL' | 'STAGE' | 'PROD';
+type Env = 'LOCAL' | 'STAGE' | 'PROD';
 
 type RootConfig = {
-  beconEnv: BeconEnv;
+  env: Env;
   mysql: MysqlConfig;
   http: HttpConfig;
 };
@@ -19,4 +19,4 @@ type HttpConfig = {
   port: number;
 };
 
-export { RootConfig, MysqlConfig, HttpConfig, BeconEnv };
+export { RootConfig, MysqlConfig, HttpConfig, Env };
