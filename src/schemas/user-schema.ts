@@ -15,4 +15,4 @@ export class UserSchema {
   public createdAt: Date;
 }
 
-export type UserMetaDataModel = Repository<UserSchema>;
+export type UserModel = Repository<UserSchema>;

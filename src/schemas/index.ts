@@ -2,6 +2,7 @@ import { DataSource } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 import { getConfiguration } from '../configurations';
+import { UserModel, UserSchema } from './user-schema';
 
 let dataSource: DataSource | null = null;
 
@@ -17,7 +18,7 @@ async function initTypeOrmModule(): Promise<DataSource> {
     database: mysqlConfig.database,
     namingStrategy: new SnakeNamingStrategy(),
     entities: [entities],
-    logging: false,
+    logging: true,
     synchronize: false,
     timezone: 'Z',
   });
@@ -27,4 +28,14 @@ async function initTypeOrmModule(): Promise<DataSource> {
   return await typeOrmDataSource.initialize();
 }
 
-export { initTypeOrmModule };
+function getTypeOrmModule() {
+  const ds: DataSource | null = dataSource;
+  if (!ds) throw new Error('Typeorm module not have been initialized');
+
+  return {
+    connection: (): DataSource => ds,
+    user: (): UserModel => ds.getRepository(UserSchema),
+  };
+}
+
+export { initTypeOrmModule, getTypeOrmModule };

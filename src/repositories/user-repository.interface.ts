@@ -1,8 +1,9 @@
-export type User = {
-  id: string;
-  name: string;
-  nickName: string;
-};
+import { UserSchema } from '../schemas/user-schema';
+
 export interface IUserRepository {
-  findByUserId(userId: string): Promise<User | null>;
+  createUser({ name, nickname }: { name: string; nickname: string }): Promise<UserSchema>;
+
+  updateUserName({ userId, name }: { userId: string; name: string }): Promise<UserSchema>;
+
+  findByUserId(userId: string): Promise<UserSchema | null>;
 }

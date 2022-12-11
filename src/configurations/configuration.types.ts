@@ -1,7 +1,4 @@
-type Env = 'LOCAL' | 'STAGE' | 'PROD';
-
 type RootConfig = {
-  env: Env;
   mysql: MysqlConfig;
   http: HttpConfig;
 };
@@ -19,4 +16,4 @@ type HttpConfig = {
   port: number;
 };
 
-export { RootConfig, MysqlConfig, HttpConfig, Env };
+export { RootConfig, MysqlConfig, HttpConfig };

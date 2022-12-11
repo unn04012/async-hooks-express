@@ -1,3 +1,5 @@
+import { getProviderModule } from '../providers';
+import { getTypeOrmModule } from '../schemas';
 import { UserRepository } from './user-repository';
 
 const instances: {
@@ -7,7 +9,10 @@ const instances: {
 };
 
 async function initRepositoryModule() {
-  const userRepository = new UserRepository();
+  const userModel = getTypeOrmModule().user();
+  const transactionContextStorageProvider = getProviderModule().transactionContextStorageProvider();
+
+  const userRepository = new UserRepository({ userModel, transactionContextStorageProvider });
 
   instances.userRepository = userRepository;
 

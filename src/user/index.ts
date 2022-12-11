@@ -1,11 +1,13 @@
 import { getRepository } from '../repositories';
+import { getTypeOrmModule } from '../schemas';
 import { UserService } from './user-service';
 
 const instances: { userService: UserService | null } = { userService: null };
 
 async function initUserModule() {
   const userRepository = getRepository().userRepository();
-  const userService = new UserService({ userRepository });
+  const dataSource = getTypeOrmModule().connection();
+  const userService = new UserService({ userRepository, dataSource });
 
   instances.userService = userService;
 

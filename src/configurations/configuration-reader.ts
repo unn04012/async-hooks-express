@@ -1,11 +1,10 @@
-import { Env, RootConfig } from './configuration.types';
+import { RootConfig } from './configuration.types';
 
 function readRootConfiguration(source: Record<string, string | undefined>): RootConfig {
   const mandatory = makeMandatoryReader(source);
   const optional = makeOptionalReader(source);
 
   return {
-    env: initBeonEnv(optional('BECON_ENV', 'LOCAL')),
     mysql: {
       host: mandatory('MYSQL_HOST'),
       port: Number(mandatory('MYSQL_PORT')),
@@ -40,13 +39,4 @@ function makeOptionalReader(source: Record<string, string | undefined>) {
   };
 }
 
-function initBeonEnv(env: string): Env {
-  const setEnv: Record<Env, Env> = {
-    LOCAL: 'LOCAL',
-    STAGE: 'STAGE',
-    PROD: 'PROD',
-  };
-  return setEnv[env] ?? 'LOCAL';
-}
-
-export { readRootConfiguration, Env };
+export { readRootConfiguration };
