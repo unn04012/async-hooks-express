@@ -26,6 +26,18 @@ function registerUserRoutes(app: Application) {
       res.json(err);
     }
   });
+
+  app.post('/user/payment', async (req, res) => {
+    try {
+      const userData = { name: 'mun', nickname: 'ninis' };
+      const user = await userService().createUserAndPayment(userData);
+
+      return res.json(user);
+    } catch (err) {
+      console.error(err);
+      res.json(err);
+    }
+  });
 }
 
 export { registerUserRoutes };

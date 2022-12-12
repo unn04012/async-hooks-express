@@ -1,3 +1,4 @@
+import { getPaymentModule } from '../payment';
 import { getRepository } from '../repositories';
 import { getTypeOrmModule } from '../schemas';
 import { UserService } from './user-service';
@@ -5,9 +6,12 @@ import { UserService } from './user-service';
 const instances: { userService: UserService | null } = { userService: null };
 
 async function initUserModule() {
+  const userPaymentService = getPaymentModule().userPaymentService();
   const userRepository = getRepository().userRepository();
+
   const dataSource = getTypeOrmModule().connection();
-  const userService = new UserService({ userRepository, dataSource });
+
+  const userService = new UserService({ userPaymentService, userRepository, dataSource });
 
   instances.userService = userService;
 

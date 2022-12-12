@@ -1,0 +1,31 @@
+import { nanoid } from 'nanoid';
+import { DataSource } from 'typeorm';
+import { IUserPaymentRepository } from '../repositories/user-payment-repository-interface';
+import { AmountType } from '../schemas/user-payment-schema';
+
+export class UserPaymentService {
+  private _userPaymentRepository: IUserPaymentRepository;
+  private _dataSource: DataSource;
+
+  constructor({ userPaymentRepository, dataSource }: { userPaymentRepository: IUserPaymentRepository; dataSource: DataSource }) {
+    this._userPaymentRepository = userPaymentRepository;
+    this._dataSource = dataSource;
+  }
+
+  public async createPaymentLog(userId: string) {
+    const paymentLog = await this._requestUserPaymentLog(userId);
+    const user = await this._userPaymentRepository.createPayment(paymentLog);
+
+    return user;
+  }
+
+  private async _requestUserPaymentLog(userId: string) {
+    const paymentId = nanoid();
+    return {
+      paymentId,
+      userId,
+      amount: Math.floor(Math.random() * (10000 - 100 + 1) + 100),
+      amountType: AmountType[Math.round(Math.random())] as AmountType,
+    };
+  }
+}

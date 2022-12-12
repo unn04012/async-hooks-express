@@ -2,6 +2,7 @@ import { DataSource } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 import { getConfiguration } from '../configurations';
+import { UserPaymentModel, UserPaymentSchema } from './user-payment-schema';
 import { UserModel, UserSchema } from './user-schema';
 
 let dataSource: DataSource | null = null;
@@ -35,6 +36,7 @@ function getTypeOrmModule() {
   return {
     connection: (): DataSource => ds,
     user: (): UserModel => ds.getRepository(UserSchema),
+    userPayment: (): UserPaymentModel => ds.getRepository(UserPaymentSchema),
   };
 }
 

@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Repository } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Repository } from 'typeorm';
+import { UserPaymentSchema } from './user-payment-schema';
 
 @Entity('user')
 export class UserSchema {
@@ -13,6 +14,9 @@ export class UserSchema {
 
   @CreateDateColumn()
   public createdAt: Date;
+
+  @OneToMany(() => UserPaymentSchema, (userPayment) => userPayment.User)
+  UserPayment: UserPaymentSchema[];
 }
 
 export type UserModel = Repository<UserSchema>;

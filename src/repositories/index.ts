@@ -1,20 +1,26 @@
 import { getProviderModule } from '../providers';
 import { getTypeOrmModule } from '../schemas';
+import { UserPaymentRepository } from './user-payment-repository';
 import { UserRepository } from './user-repository';
 
 const instances: {
   userRepository: UserRepository | null;
+  userPaymentRepository: UserPaymentRepository | null;
 } = {
   userRepository: null,
+  userPaymentRepository: null,
 };
 
 async function initRepositoryModule() {
   const userModel = getTypeOrmModule().user();
+  const userPaymentModel = getTypeOrmModule().userPayment();
   const transactionContextStorageProvider = getProviderModule().transactionContextStorageProvider();
 
   const userRepository = new UserRepository({ userModel, transactionContextStorageProvider });
+  const userPaymentRepository = new UserPaymentRepository({ userModel, userPaymentModel, transactionContextStorageProvider });
 
   instances.userRepository = userRepository;
+  instances.userPaymentRepository = userPaymentRepository;
 
   console.log(`[${new Date().toISOString()}] repository module initialized`);
 }
@@ -30,6 +36,7 @@ function getRepository() {
 
   return {
     userRepository: () => getOrFail<UserRepository>(() => instances.userRepository, 'userRepository'),
+    userPaymentRepository: () => getOrFail<UserPaymentRepository>(() => instances.userPaymentRepository, 'userPaymentRepository'),
   };
 }
 
