@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import { transactionContextIntercepter } from '../decorators/transaction-context-decorator';
+import { Transaction, transactionContextIntercepter } from '../decorators/transaction-context-decorator';
 import { UserPaymentService } from '../payment/user-payment-service';
 import { IUserRepository } from '../repositories/user-repository.interface';
 
@@ -34,14 +34,13 @@ export class UserService {
     });
   }
 
+  @Transaction()
   public async createAndUpdateUser({ name, nickname }: { name: string; nickname: string }) {
-    return transactionContextIntercepter(this._dataSource, async () => {
-      const user = await this._userRepository.createUser({ name, nickname });
+    const user = await this._userRepository.createUser({ name, nickname });
 
-      await this._userRepository.updateUserName({ userId: user.userId, name: 'updated2 mun' });
+    await this._userRepository.updateUserName({ userId: user.userId, name: 'updated2 mun' });
 
-      return user;
-    });
+    return user;
   }
 
   public async findUser({ userId }: { userId: string }) {

@@ -1,4 +1,4 @@
-import { initializeTransactionalContext } from 'typeorm-transactional-cls-hooked';
+import 'reflect-metadata';
 import { initConfigurationModule } from './configurations';
 import { generateHttpServerRunner } from './http-routes';
 import { initPaymentModule } from './payment';
@@ -8,7 +8,6 @@ import { initTypeOrmModule } from './schemas';
 import { initUserModule } from './user';
 
 (async () => {
-  initializeTransactionalContext();
   initConfigurationModule();
   await initTypeOrmModule();
   initProviderModule();
