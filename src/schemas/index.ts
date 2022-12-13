@@ -19,7 +19,7 @@ async function initTypeOrmModule(): Promise<DataSource> {
     database: mysqlConfig.database,
     namingStrategy: new SnakeNamingStrategy(),
     entities: [entities],
-    logging: true,
+    logging: false,
     synchronize: false,
     timezone: 'Z',
   });

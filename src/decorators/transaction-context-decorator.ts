@@ -9,7 +9,7 @@ type QueryExecuter<T> = () => Promise<T>;
 export function Transaction() {
   return function (target: any, key: string, desc: PropertyDescriptor) {
     const method = desc.value;
-    desc.value = async function ({ name, nickname }: { name: string; nickname: string }) {
+    desc.value = async function (this: any, ...args: any[]) {
       const connection = getTypeOrmModule().connection();
       const transactionContextProvider = getProviderModule().transactionContextStorageProvider();
       const queryRunner = connection.createQueryRunner();
@@ -17,13 +17,14 @@ export function Transaction() {
       try {
         await queryRunner.connect();
         await queryRunner.startTransaction();
-        console.log(this);
-        const result = await this[method({ name, nickname })];
+
+        const result = await method.apply(this, args);
 
         await queryRunner.commitTransaction();
         return result;
-      } catch {
+      } catch (err) {
         await queryRunner.rollbackTransaction();
+        throw err;
       } finally {
         await queryRunner.release();
       }

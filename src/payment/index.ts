@@ -6,8 +6,7 @@ const instances: { userPaymentService: UserPaymentService | null } = { userPayme
 
 async function initPaymentModule() {
   const userPaymentRepository = getRepository().userPaymentRepository();
-  const dataSource = getTypeOrmModule().connection();
-  const userPaymentService = new UserPaymentService({ userPaymentRepository, dataSource });
+  const userPaymentService = new UserPaymentService({ userPaymentRepository });
 
   instances.userPaymentService = userPaymentService;
 

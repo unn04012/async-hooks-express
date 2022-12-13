@@ -17,7 +17,7 @@ function registerUserRoutes(app: Application) {
 
   app.post('/user', async (req, res) => {
     try {
-      const userData = { name: 'mun', nickname: 'ninis' };
+      const userData = { name: 'munninis', nickname: 'ninis' };
       const user = await userService().createAndUpdateUser(userData);
 
       return res.json(user);
@@ -29,8 +29,9 @@ function registerUserRoutes(app: Application) {
 
   app.post('/user/payment', async (req, res) => {
     try {
-      const userData = { name: 'mun', nickname: 'ninis' };
-      const user = await userService().createUserAndPayment(userData);
+      const { name, nickname } = req.body;
+      console.log(req.body);
+      const user = await userService().createUserAndPayment({ name, nickname });
 
       return res.json(user);
     } catch (err) {

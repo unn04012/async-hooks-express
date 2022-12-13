@@ -1,15 +1,12 @@
 import { nanoid } from 'nanoid';
-import { DataSource } from 'typeorm';
 import { IUserPaymentRepository } from '../repositories/user-payment-repository-interface';
 import { AmountType } from '../schemas/user-payment-schema';
 
 export class UserPaymentService {
   private _userPaymentRepository: IUserPaymentRepository;
-  private _dataSource: DataSource;
 
-  constructor({ userPaymentRepository, dataSource }: { userPaymentRepository: IUserPaymentRepository; dataSource: DataSource }) {
+  constructor({ userPaymentRepository }: { userPaymentRepository: IUserPaymentRepository }) {
     this._userPaymentRepository = userPaymentRepository;
-    this._dataSource = dataSource;
   }
 
   public async createPaymentLog(userId: string) {

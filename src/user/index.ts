@@ -9,9 +9,7 @@ async function initUserModule() {
   const userPaymentService = getPaymentModule().userPaymentService();
   const userRepository = getRepository().userRepository();
 
-  const dataSource = getTypeOrmModule().connection();
-
-  const userService = new UserService({ userPaymentService, userRepository, dataSource });
+  const userService = new UserService({ userPaymentService, userRepository });
 
   instances.userService = userService;
 

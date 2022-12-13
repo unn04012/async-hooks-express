@@ -5,6 +5,8 @@ import { registerUserRoutes } from './user-routes';
 function generateHttpServerRunner() {
   const application = express();
 
+  application.use(express.json());
+
   registerUserRoutes(application);
 
   return {
