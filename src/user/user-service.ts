@@ -19,7 +19,6 @@ export class UserService {
     await this._userPaymentService.createPaymentLog(user.userId);
 
     const updatedUser = await this._userRepository.updateUserName({ userId: user.userId, name: 'paymented mun' });
-    console.log('request id at service tier', requestAlsInstance.getStore());
     return updatedUser;
   }
 

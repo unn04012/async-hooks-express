@@ -1,24 +1,21 @@
 import { Request, RequestHandler } from 'express';
-import { requestAlsInstance } from './request-context-storage-middleware';
+import { getLogger } from '../logger';
 
 const writeAccessLog = ({ req, statusCode, success, error }: { req: Request; statusCode: number; success?: any; error?: any }) => {
-  //TODO init logger module
-  const requestContext = requestAlsInstance.getStore();
-  console.log(
-    JSON.stringify({
-      requestId: requestContext ? requestContext.requestId : null,
-      url: req.url,
-      method: req.method,
-      body: req.body,
-      qs: req.query,
-      statusCode,
+  const logger = getLogger()();
+
+  logger.accesssLog({
+    url: req.url,
+    method: req.method,
+    body: req.body,
+    qs: req.query,
+    statusCode,
+    error,
+    response: {
+      success,
       error,
-      response: {
-        success,
-        error,
-      },
-    })
-  );
+    },
+  });
 };
 
 export const responseOverrideMiddleware = (): RequestHandler => (req, res, next) => {

@@ -2,11 +2,13 @@ import { RequestHandler } from 'express';
 import { nanoid } from 'nanoid';
 
 import { requestAlsInstance, RequestAsyncaLocalContext, transactionAlsInstance } from '../async-storages/async-local-storages';
+import { getLogger } from '../logger';
 
 function requestContextStorageMiddleware(): RequestHandler {
   return async (req, res, next) => {
     const context = makeRequestContextPayload();
-    console.log(`init request id ${context.requestId}`);
+    const logger = getLogger()('Pre-Request');
+    logger.info(`init request-id ${context.requestId}`);
     requestAlsInstance.run(context, () => {
       next();
     });

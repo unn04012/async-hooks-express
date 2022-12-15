@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { initConfigurationModule } from './configurations';
 import { generateHttpServerRunner } from './http-routes';
+import { initLoggerModule } from './logger';
 import { initPaymentModule } from './payment';
 import { initProviderModule } from './providers';
 import { initRepositoryModule } from './repositories';
@@ -9,6 +10,7 @@ import { initUserModule } from './user';
 
 (async () => {
   initConfigurationModule();
+  initLoggerModule();
   await initTypeOrmModule();
   initProviderModule();
   initRepositoryModule();
