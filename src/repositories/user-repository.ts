@@ -1,20 +1,12 @@
-import { TransactionContextStorageProvider } from '../providers/transaction-context-storage-provider';
+import { transactionAlsInstance } from '../async-storages/async-local-storages';
 import { UserModel, UserSchema } from '../schemas/user-schema';
 import { IUserRepository } from './user-repository.interface';
 
 export class UserRepository implements IUserRepository {
   private _userModel: UserModel;
-  private _transactionContextStorageProvider: TransactionContextStorageProvider;
 
-  constructor({
-    userModel,
-    transactionContextStorageProvider,
-  }: {
-    userModel: UserModel;
-    transactionContextStorageProvider: TransactionContextStorageProvider;
-  }) {
+  constructor({ userModel }: { userModel: UserModel }) {
     this._userModel = userModel;
-    this._transactionContextStorageProvider = transactionContextStorageProvider;
   }
 
   public async updateUserName({ userId, name }: { userId: string; name: string }): Promise<UserSchema> {
@@ -41,7 +33,7 @@ export class UserRepository implements IUserRepository {
   }
 
   private _getRepo() {
-    const entityManager = this._transactionContextStorageProvider.get();
+    const entityManager = transactionAlsInstance.getStore();
 
     return entityManager ? entityManager.getRepository(UserSchema) : this._userModel;
   }

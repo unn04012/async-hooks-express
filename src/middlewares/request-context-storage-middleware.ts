@@ -1,13 +1,22 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
+import { RequestHandler } from 'express';
 import { nanoid } from 'nanoid';
 
-import { getProviderModule } from '../providers';
+import { requestAlsInstance, RequestAsyncaLocalContext, transactionAlsInstance } from '../async-storages/async-local-storages';
 
-export const requestContextStorageMiddleware = (): RequestHandler => {
+function requestContextStorageMiddleware(): RequestHandler {
   return async (req, res, next) => {
-    const requestContextStorageProvider = getProviderModule().requestContextStorageProvider();
-    const requestContextId = nanoid();
-    requestContextStorageProvider.save(requestContextId);
-    next();
+    const context = makeRequestContextPayload();
+    console.log(`init request id ${context.requestId}`);
+    requestAlsInstance.run(context, () => {
+      next();
+    });
   };
-};
+}
+
+function makeRequestContextPayload(): RequestAsyncaLocalContext {
+  return {
+    requestId: nanoid(),
+  };
+}
+
+export { requestAlsInstance, transactionAlsInstance, requestContextStorageMiddleware, makeRequestContextPayload };

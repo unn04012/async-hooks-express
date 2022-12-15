@@ -14,10 +14,9 @@ const instances: {
 async function initRepositoryModule() {
   const userModel = getTypeOrmModule().user();
   const userPaymentModel = getTypeOrmModule().userPayment();
-  const transactionContextStorageProvider = getProviderModule().transactionContextStorageProvider();
 
-  const userRepository = new UserRepository({ userModel, transactionContextStorageProvider });
-  const userPaymentRepository = new UserPaymentRepository({ userModel, userPaymentModel, transactionContextStorageProvider });
+  const userRepository = new UserRepository({ userModel });
+  const userPaymentRepository = new UserPaymentRepository({ userModel, userPaymentModel });
 
   instances.userRepository = userRepository;
   instances.userPaymentRepository = userPaymentRepository;

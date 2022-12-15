@@ -1,4 +1,4 @@
-import { TransactionContextStorageProvider } from '../providers/transaction-context-storage-provider';
+import { transactionAlsInstance } from '../middlewares/request-context-storage-middleware';
 import { AmountType, UserPaymentModel, UserPaymentSchema } from '../schemas/user-payment-schema';
 import { UserModel } from '../schemas/user-schema';
 import { IUserPaymentRepository } from './user-payment-repository-interface';
@@ -6,20 +6,10 @@ import { IUserPaymentRepository } from './user-payment-repository-interface';
 export class UserPaymentRepository implements IUserPaymentRepository {
   private _userModel: UserModel;
   private _userPaymentModel: UserPaymentModel;
-  private _transactionContextStorageProvider: TransactionContextStorageProvider;
 
-  constructor({
-    userModel,
-    userPaymentModel,
-    transactionContextStorageProvider,
-  }: {
-    userModel: UserModel;
-    userPaymentModel: UserPaymentModel;
-    transactionContextStorageProvider: TransactionContextStorageProvider;
-  }) {
+  constructor({ userModel, userPaymentModel }: { userModel: UserModel; userPaymentModel: UserPaymentModel }) {
     this._userModel = userModel;
     this._userPaymentModel = userPaymentModel;
-    this._transactionContextStorageProvider = transactionContextStorageProvider;
   }
 
   public async createPayment({
@@ -39,7 +29,7 @@ export class UserPaymentRepository implements IUserPaymentRepository {
   }
 
   private _getRepo() {
-    const entityManager = this._transactionContextStorageProvider.get();
+    const entityManager = transactionAlsInstance.getStore();
 
     return entityManager ? entityManager.getRepository(UserPaymentSchema) : this._userPaymentModel;
   }
