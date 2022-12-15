@@ -1,9 +1,11 @@
 import { Application } from 'express';
 import { requestContextStorageMiddleware } from '../middlewares/request-context-storage-middleware';
+import { getProviderModule } from '../providers';
 import { getUserModule } from '../user';
 
 function registerUserRoutes(app: Application) {
   const { userService } = getUserModule();
+  const { transactionContextStorageProvider } = getProviderModule();
   app.get('/:userId', requestContextStorageMiddleware, async (req, res) => {
     try {
       const { userId } = req.params;
@@ -30,7 +32,7 @@ function registerUserRoutes(app: Application) {
   app.post('/user/payment', async (req, res) => {
     try {
       const { name, nickname } = req.body;
-      console.log(req.body);
+
       const user = await userService().createUserAndPayment({ name, nickname });
 
       return res.json(user);

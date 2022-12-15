@@ -1,15 +1,13 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { nanoid } from 'nanoid';
 
 import { getProviderModule } from '../providers';
 
-export const requestContextStorageMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const requestContextStorage = getProviderModule().requestContextStorageProvider();
-    const contextId = nanoid();
-    requestContextStorage.save(contextId);
+export const requestContextStorageMiddleware = (): RequestHandler => {
+  return async (req, res, next) => {
+    const requestContextStorageProvider = getProviderModule().requestContextStorageProvider();
+    const requestContextId = nanoid();
+    requestContextStorageProvider.save(requestContextId);
     next();
-  } catch (err) {
-    next(err);
-  }
+  };
 };

@@ -9,7 +9,9 @@ type QueryExecuter<T> = () => Promise<T>;
 export function Transaction() {
   return function (target: any, key: string, desc: PropertyDescriptor) {
     const method = desc.value;
+
     desc.value = async function (this: any, ...args: any[]) {
+      console.log('hello world');
       const connection = getTypeOrmModule().connection();
       const transactionContextProvider = getProviderModule().transactionContextStorageProvider();
       const queryRunner = connection.createQueryRunner();
